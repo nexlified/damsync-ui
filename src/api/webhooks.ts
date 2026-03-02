@@ -3,13 +3,13 @@ import type { Webhook, WebhookRequest, WebhookDelivery, WebhookCreateResponse } 
 
 export const webhooksApi = {
   list: () =>
-    client.get<Webhook[]>('/webhooks').then((r) => r.data),
+    client.get<{ data: Webhook[] | null }>('/webhooks').then((r) => r.data.data ?? []),
 
   get: (id: string) =>
     client.get<Webhook>(`/webhooks/${id}`).then((r) => r.data),
 
   create: (data: WebhookRequest) =>
-    client.post<WebhookCreateResponse>('/webhooks', data).then((r) => r.data),
+    client.post<{ webhook: Webhook; secret: string }>('/webhooks', data).then((r) => ({ ...r.data.webhook, secret: r.data.secret })),
 
   update: (id: string, data: Partial<WebhookRequest>) =>
     client.put<Webhook>(`/webhooks/${id}`, data).then((r) => r.data),
@@ -21,5 +21,5 @@ export const webhooksApi = {
     client.post(`/webhooks/${id}/test`),
 
   getDeliveries: (id: string, params?: { limit?: number; offset?: number }) =>
-    client.get<WebhookDelivery[]>(`/webhooks/${id}/deliveries`, { params }).then((r) => r.data),
+    client.get<{ data: WebhookDelivery[] | null }>(`/webhooks/${id}/deliveries`, { params }).then((r) => r.data.data ?? []),
 }

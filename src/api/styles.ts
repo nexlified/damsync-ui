@@ -3,7 +3,7 @@ import type { ImageStyle, ImageStyleRequest } from '@/types'
 
 export const stylesApi = {
   list: () =>
-    client.get<ImageStyle[]>('/styles').then((r) => r.data),
+    client.get<{ data: ImageStyle[] | null }>('/styles').then((r) => r.data.data ?? []),
 
   get: (id: string) =>
     client.get<ImageStyle>(`/styles/${id}`).then((r) => r.data),

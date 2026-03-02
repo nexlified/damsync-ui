@@ -3,7 +3,7 @@ import type { Domain, DomainRequest } from '@/types'
 
 export const domainsApi = {
   list: () =>
-    client.get<Domain[]>('/domains').then((r) => r.data),
+    client.get<{ data: Domain[] | null }>('/domains').then((r) => r.data.data ?? []),
 
   create: (data: DomainRequest) =>
     client.post<Domain>('/domains', data).then((r) => r.data),

@@ -46,8 +46,8 @@ export function AssetFilters({
         <SelectContent>
           <SelectItem value="created_at_desc">Newest first</SelectItem>
           <SelectItem value="created_at_asc">Oldest first</SelectItem>
-          <SelectItem value="name_asc">Name A-Z</SelectItem>
-          <SelectItem value="size_desc">Largest first</SelectItem>
+          <SelectItem value="filename_asc">Name A-Z</SelectItem>
+          <SelectItem value="size_bytes_desc">Largest first</SelectItem>
         </SelectContent>
       </Select>
 

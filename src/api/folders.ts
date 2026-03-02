@@ -3,10 +3,10 @@ import type { Folder, FolderRequest } from '@/types'
 
 export const foldersApi = {
   list: () =>
-    client.get<Folder[]>('/folders').then((r) => r.data),
+    client.get<{ data: Folder[] | null }>('/folders').then((r) => r.data.data ?? []),
 
   tree: () =>
-    client.get<Folder[]>('/folders/tree').then((r) => r.data),
+    client.get<{ data: Folder[] }>('/folders/tree').then((r) => r.data.data ?? []),
 
   get: (id: string) =>
     client.get<Folder>(`/folders/${id}`).then((r) => r.data),

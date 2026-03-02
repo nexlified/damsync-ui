@@ -3,7 +3,7 @@ import type { Tag } from '@/types'
 
 export const tagsApi = {
   list: () =>
-    client.get<Tag[]>('/tags').then((r) => r.data),
+    client.get<{ data: Tag[] | null }>('/tags').then((r) => r.data.data ?? []),
 
   create: (data: { name: string }) =>
     client.post<Tag>('/tags', data).then((r) => r.data),

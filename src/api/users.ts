@@ -3,7 +3,7 @@ import type { User, UserRequest } from '@/types'
 
 export const usersApi = {
   list: () =>
-    client.get<User[]>('/users').then((r) => r.data),
+    client.get<{ data: User[] }>('/users').then((r) => r.data.data),
 
   get: (id: string) =>
     client.get<User>(`/users/${id}`).then((r) => r.data),

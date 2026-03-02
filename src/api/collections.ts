@@ -3,7 +3,7 @@ import type { Collection, CollectionRequest, Asset, PaginatedResponse } from '@/
 
 export const collectionsApi = {
   list: () =>
-    client.get<Collection[]>('/collections').then((r) => r.data),
+    client.get<{ data: Collection[] | null }>('/collections').then((r) => r.data.data ?? []),
 
   get: (id: string) =>
     client.get<Collection>(`/collections/${id}`).then((r) => r.data),
