@@ -1,0 +1,19 @@
+import client from './client'
+import type { ImageStyle, ImageStyleRequest } from '@/types'
+
+export const stylesApi = {
+  list: () =>
+    client.get<ImageStyle[]>('/styles').then((r) => r.data),
+
+  get: (id: string) =>
+    client.get<ImageStyle>(`/styles/${id}`).then((r) => r.data),
+
+  create: (data: ImageStyleRequest) =>
+    client.post<ImageStyle>('/styles', data).then((r) => r.data),
+
+  update: (id: string, data: Partial<ImageStyleRequest>) =>
+    client.put<ImageStyle>(`/styles/${id}`, data).then((r) => r.data),
+
+  delete: (id: string) =>
+    client.delete(`/styles/${id}`),
+}
