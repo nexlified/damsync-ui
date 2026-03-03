@@ -1,5 +1,5 @@
 import client from './client'
-import type { Webhook, WebhookRequest, WebhookDelivery, WebhookCreateResponse } from '@/types'
+import type { Webhook, WebhookRequest, WebhookDelivery } from '@/types'
 
 export const webhooksApi = {
   list: () =>
