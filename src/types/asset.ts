@@ -21,6 +21,7 @@ export interface Asset {
   folder_id: string | null
   filename: string
   storage_key: string
+  url: string
   mime_type: string
   size_bytes: number
   width: number | null

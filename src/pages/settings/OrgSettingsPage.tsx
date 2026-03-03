@@ -22,7 +22,7 @@ export function OrgSettingsPage() {
 
   const onSubmit = (data: FormValues) => {
     updateOrg.mutate(data, {
-      onSuccess: () => toast({ title: 'Settings saved' }),
+      onSuccess: () => toast({ title: 'Settings saved.' }),
     })
   }
 

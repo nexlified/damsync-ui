@@ -16,4 +16,9 @@ export const stylesApi = {
 
   delete: (id: string) =>
     client.delete(`/styles/${id}`),
+
+  importDefaults: () =>
+    client
+      .post<{ data: ImageStyle[]; imported: number; updated: number }>('/styles/import-defaults')
+      .then((r) => r.data),
 }

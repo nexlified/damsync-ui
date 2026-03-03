@@ -1,4 +1,4 @@
-const CDN = import.meta.env.VITE_CDN_URL as string
+const CDN = (import.meta.env.VITE_CDN_URL || import.meta.env.VITE_API_URL || '') as string
 
 export const originalUrl = (key: string) => `${CDN}/files/${key}`
 export const styledUrl = (slug: string, key: string) => `${CDN}/styles/${slug}/${key}`

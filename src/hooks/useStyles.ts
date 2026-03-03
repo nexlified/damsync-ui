@@ -40,3 +40,11 @@ export function useDeleteStyle() {
     onSuccess: () => qc.invalidateQueries({ queryKey: [STYLES_KEY] }),
   })
 }
+
+export function useImportDefaultStyles() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: () => stylesApi.importDefaults(),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [STYLES_KEY] }),
+  })
+}

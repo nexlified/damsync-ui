@@ -1,19 +1,41 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Pencil, Trash2 } from 'lucide-react'
-import { useStyles, useDeleteStyle } from '@/hooks/useStyles'
+import { Plus, Pencil, Trash2, Download } from 'lucide-react'
+import { useStyles, useDeleteStyle, useImportDefaultStyles } from '@/hooks/useStyles'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
 import { toast } from '@/hooks/useToast'
 
 export function StylesPage() {
   const { data: styles = [], isLoading } = useStyles()
   const deleteStyle = useDeleteStyle()
+  const importDefaults = useImportDefaultStyles()
+  const [showImportDialog, setShowImportDialog] = useState(false)
 
   const handleDelete = (id: string, name: string) => {
     if (!confirm(`Delete style "${name}"?`)) return
     deleteStyle.mutate(id, {
       onSuccess: () => toast({ title: 'Style deleted' }),
+    })
+  }
+
+  const handleImportConfirm = () => {
+    importDefaults.mutate(undefined, {
+      onSuccess: (result) => {
+        setShowImportDialog(false)
+        toast({
+          title: `Imported ${result.imported} styles (${result.updated} updated)`,
+        })
+      },
     })
   }
 
@@ -26,9 +48,14 @@ export function StylesPage() {
           <h3 className="font-medium">Image Styles</h3>
           <p className="text-sm text-gray-500">Define transform pipelines for on-demand image resizing</p>
         </div>
-        <Button asChild>
-          <Link to="/settings/styles/new"><Plus className="mr-1.5 h-4 w-4" /> New Style</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => setShowImportDialog(true)}>
+            <Download className="mr-1.5 h-4 w-4" /> Import Defaults
+          </Button>
+          <Button asChild>
+            <Link to="/settings/styles/new"><Plus className="mr-1.5 h-4 w-4" /> New Style</Link>
+          </Button>
+        </div>
       </div>
 
       {styles.length === 0 ? (
@@ -75,6 +102,30 @@ export function StylesPage() {
           ))}
         </div>
       )}
+
+      <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Import default styles?</DialogTitle>
+            <DialogDescription>
+              This will create any missing default styles and <strong>overwrite</strong> existing
+              styles that share the same slug. This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowImportDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleImportConfirm}
+              disabled={importDefaults.isPending}
+            >
+              {importDefaults.isPending ? 'Importing…' : 'Import & Overwrite'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

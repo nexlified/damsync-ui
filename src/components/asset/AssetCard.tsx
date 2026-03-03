@@ -1,6 +1,5 @@
 import { Image, File, Video } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { originalUrl } from '@/lib/cdn'
 import type { Asset } from '@/types'
 import { formatBytes } from '@/lib/format'
 
@@ -33,7 +32,7 @@ export function AssetCard({ asset, selected, onClick }: AssetCardProps) {
       <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
         {isImage ? (
           <img
-            src={originalUrl(asset.storage_key)}
+            src={asset.url}
             alt={asset.metadata?.alt_text ?? title}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
             loading="lazy"

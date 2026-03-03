@@ -4,7 +4,6 @@ import { ExternalLink, Trash2, Copy, Check } from 'lucide-react'
 import type { Asset } from '@/types'
 import { useUpdateAsset, useDeleteAsset } from '@/hooks/useAssets'
 import { assetsApi } from '@/api/assets'
-import { originalUrl } from '@/lib/cdn'
 import { formatBytes, formatDateTime } from '@/lib/format'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -97,7 +96,7 @@ export function AssetDetail({ asset, onClose }: AssetDetailProps) {
             {isImage && (
               <div className="mb-4 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                 <img
-                  src={originalUrl(asset.storage_key)}
+                  src={asset.url}
                   alt={asset.metadata?.alt_text ?? asset.filename}
                   className="w-full object-contain max-h-48"
                 />
@@ -113,7 +112,7 @@ export function AssetDetail({ asset, onClose }: AssetDetailProps) {
             </div>
 
             {/* Tags */}
-            {asset.tags.length > 0 && (
+            {asset.tags?.length > 0 && (
               <div className="mb-4 flex flex-wrap gap-1">
                 {asset.tags.map((tag) => (
                   <Badge key={tag.id} variant="secondary">{tag.name}</Badge>
@@ -160,11 +159,11 @@ export function AssetDetail({ asset, onClose }: AssetDetailProps) {
             {/* CDN URL */}
             <div className="mt-4 space-y-2">
               <div className="flex items-center gap-2">
-                <Input readOnly value={originalUrl(asset.storage_key)} className="text-xs" />
-                <Button size="icon" variant="outline" onClick={() => void handleCopy(originalUrl(asset.storage_key))}>
+                <Input readOnly value={asset.url} className="text-xs" />
+                <Button size="icon" variant="outline" onClick={() => void handleCopy(asset.url)}>
                   {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 </Button>
-                <a href={originalUrl(asset.storage_key)} target="_blank" rel="noopener noreferrer">
+                <a href={asset.url} target="_blank" rel="noopener noreferrer">
                   <Button size="icon" variant="outline"><ExternalLink className="h-4 w-4" /></Button>
                 </a>
               </div>

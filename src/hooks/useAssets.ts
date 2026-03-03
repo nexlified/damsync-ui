@@ -10,7 +10,7 @@ export function useAssets(params?: AssetListParams) {
     queryFn: ({ pageParam }) =>
       assetsApi.list({ ...params, cursor: pageParam as string | undefined }),
     initialPageParam: undefined as string | undefined,
-    getNextPageParam: (last) => last.next_cursor ?? undefined,
+    getNextPageParam: (last) => last.next_cursor || undefined,
   })
 }
 
